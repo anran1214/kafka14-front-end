@@ -1,7 +1,7 @@
 {
   "name": "vuepress-theme-reco-demo",
   "version": "1.0.0",
-  "author": "reco_luan",
+  "author": "kafka",
   "scripts": {
     "dev": "vuepress dev . --open --host \"localhost\"",
     "build": "vuepress build .",
