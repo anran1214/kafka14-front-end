@@ -6,7 +6,7 @@ module.exports = {
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'viewport', content: 'width=device-width,initial-scale=1,user-scalable=no' }]
   ],
-  base:'kafka14-front-end',
+  base:'/kafka14-front-end/',
   theme: 'reco',
   themeConfig: {
     nav: [
