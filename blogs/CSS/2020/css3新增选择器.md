@@ -2,7 +2,7 @@
 title: CSS 新增选择器
 date: 2020-11-24
 tags:
- - 伪类伪元素
+ - css基础
 categories: 
  - CSS
 ---

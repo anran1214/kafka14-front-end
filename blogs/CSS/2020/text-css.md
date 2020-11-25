@@ -2,7 +2,7 @@
 title: CSS 字体文本常用样式
 date: 2020-11-24
 tags:
- - CSS text
+ - css基础
 categories: 
  - CSS
 ---

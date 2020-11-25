@@ -2,7 +2,7 @@
 title: CSS background 背景属性
 date: 2020-11-25
 tags:
- - css background
+ - css基础
 categories: 
  - CSS
 ---
