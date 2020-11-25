@@ -2,12 +2,12 @@
 title: CSS 字体文本常用样式
 date: 2020-11-24
 tags:
- - CSS
+ - CSS text
 categories: 
  - CSS
 ---
 
-## white-space 设置如何处理元素中的空白符
+## white-space 设置如何处理元素中的空白符 `css1`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | normal      |默认。空白会被浏览器忽略|  
@@ -34,7 +34,7 @@ This is some text. This is some text.This is some text.
 This is some text. This is some text. This is some text.
 :::
 
-## word-spacing 增加或减少字与字之间的空白
+## word-spacing 增加或减少字与字之间的空白 `css1`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | normal      |默认，0。定义单词间的标准空间|  
@@ -49,7 +49,7 @@ This is some text.
 word-spacing:30px / 5em
 This           is          some          text. 
 :::
-## overflow 规定当内容溢出元素框时发生的事情
+## overflow 规定当内容溢出元素框时发生的事情 `css2`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | visible      |默认。内容不会被修剪，会呈现在元素框之外|  
@@ -86,7 +86,7 @@ This           is          some          text.
 </script>
 ```
 :::
-## text-overflow 规定当文本溢出包含元素时发生的事情
+## text-overflow 规定当文本溢出包含元素时发生的事情 `css3`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | clip      |修剪文本|  
@@ -138,8 +138,12 @@ This           is          some          text.
 */
 </script>
 ```
+鼠标悬浮展示全部信息，用到`title`属性
+#### title属性规定关于元素的额外信息。通常会在鼠标移动到元素上时显示一段工具提示文本
+`<eliment title="text">`
+
 :::
-## text-align 规定元素中的文本的水平对齐方式
+## text-align 规定元素中的文本的水平对齐方式 `css3`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | left      |默认。把文本排列到左边|  
@@ -149,7 +153,7 @@ This           is          some          text.
 |start| 内容对其开始边界|
 |end| 内容对其结束边界|
 
-## cursor 规定要显示的光标类型
+## cursor 规定要显示的光标类型 `css2`
 | 值        | 描述   |
 | :--------:   | :-----  | 
 | url      |需使用的自定义光标的urkl  
@@ -160,6 +164,15 @@ This           is          some          text.
 |text| 指示文本|
 |wait|指示程序在忙|
 
-## border-style
+## 文本效果
+## text-shadow 文本阴影 `css3`
+语法：
+`text-shadow: h-shadow v-shadow blur color;`
+| 值        | 描述   |
+| :--------:   | :-----  | 
+|h-shadow|必需。水平阴影的位置。允许负值|
+|v-shadow|必需。垂直阴影的位置。允许负值|
+|blur|可选。模糊的距离|
+|color|可选。阴影的颜色。|
 
-##box-shadow
+## text-transform 控制文本的大小写 `css1`
