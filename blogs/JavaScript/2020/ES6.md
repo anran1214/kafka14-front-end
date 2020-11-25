@@ -1,5 +1,5 @@
 ---
-title: ES6教程
+title: ES6教程笔记
 date: 2020-11-20
 tags:
  - ES6
