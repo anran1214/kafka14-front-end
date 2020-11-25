@@ -70,7 +70,7 @@ module.exports = {
     // 作者
     author: 'kafka',
     // 作者头像
-    authorAvatar: '/avatar.png',
+    authorAvatar: '/fiveone.jpg',
     // 备案号
     // record: 'xxxx',
     // 项目开始时间
@@ -101,7 +101,7 @@ module.exports = {
     [
       "@vuepress-reco/vuepress-plugin-kan-ban-niang",
       {
-        theme: ["blackCat"],
+        theme: ["whiteCat"],
         clean: true,
         modelStyle: {
           position: "fixed",
@@ -111,6 +111,7 @@ module.exports = {
           zIndex: 10
         }
       }
-    ]
+    ],
+    ['@vuepress/back-to-top'],
   ]
 }  
