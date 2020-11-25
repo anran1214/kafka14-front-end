@@ -59,7 +59,7 @@ module.exports = {
     //     link: 'https://vuepress-theme-reco.recoluan.com'
     //   },
     // ],
-    logo: '/logo.png',
+    // logo: '/logo.png',
     // 搜索设置
     search: true,
     searchMaxSuggestions: 10,
@@ -70,7 +70,7 @@ module.exports = {
     // 作者
     author: 'kafka',
     // 作者头像
-    authorAvatar: '/fiveone.jpg',
+    authorAvatar: '/avatar.png',
     // 备案号
     // record: 'xxxx',
     // 项目开始时间
@@ -105,10 +105,11 @@ module.exports = {
         clean: true,
         modelStyle: {
           position: "fixed",
+          top:"200px",
           left: "0px",
           bottom: "0px",
           opacity: "0.9",
-          zIndex: 10
+          zIndex: 9999
         }
       }
     ],
