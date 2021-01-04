@@ -7,11 +7,6 @@ categories:
   - React
 ---
 
-why hook
-Huge components that are hard to refactor and test.
-Duplicated logic between different components and lifecycle methods.
-Complex patterns like render props and higher-order components.90
-
 ## 一.FAQ
 
 ### 1.有什么是 Hook 能做而 class 做不到的？
@@ -148,8 +143,6 @@ function Counter() {
 }
 ```
 
-## 二.Hook 规则
-
 ###
 
 ## 背景
@@ -160,7 +153,9 @@ React 采用自上而下单向数据流的方式，管理自身的数据和状�
 单向数据流：数据只能从父组件触发，向下传递到子组件。
 ::: warning
 React 中，state 和 props 的改变，都会引发组件重新渲染
-对于 class 组件，重新渲染是执行 render 方法；对于函数式组件，是整个函数重新执行
+对于 class 组件，重新渲染是执行 render 方法；对于函数式组件，是整个函
+
+数重新执行
 :::
 
 ### 函数式组件
@@ -220,6 +215,13 @@ const [visible, setVisible] = useState(false);
 const [arr, setArr] = useState<number[]>([]);
 ```
 
+#### useState 更新 state 变量的时候是替换它,而 class 中的 this.setState，会把更新后的字段 合并 入对象中。
+
+:::tip
+我们推荐把 state 切分成多个 state 变量，每个变量包含的不同值会在同时发生变化。
+把独立的 state 变量拆分开还有另外的好处。这使得后期把一些相关的逻辑抽取到一个自定义 Hook 变得容易
+:::
+
 ## useEffect 有两个参数
 
 第一个参数是自定义的执行内容，作为函数传入。
@@ -228,16 +230,11 @@ const [arr, setArr] = useState<number[]>([]);
 
 当第二个参数传入空数组，即没有传入比较变化的变量，则比较结果永远都保持不变，那么副作用逻辑就只能执行一次。
 
-## 执行副作用逻辑: DOM 操作 数据请求 组件更新
+## 执行副作用:数据获取，设置订阅以及手动更改 React 组件中的 DOM
 
 我们可以使用多个 useEffect 来执行不同的副作用逻辑
 
-### 相当于生命周期的 componentDidMount,componentDidUpdate,componentWillUnmount
-
-:::warning
-要利用 props，去修改内部的 state。
-这是受控组件的核心思维
-:::
+useEffect 相当于生命周期的 componentDidMount,componentDidUpdate,componentWillUnmount
 
 ## 实现 componentWillUnmount 的功能如下
 
@@ -261,6 +258,83 @@ useEffect(() => {
 6.组件渲染完成，clear1 执行
 7.副作用逻辑执行，返回另一个 clear 函数，命名为 clear2
 8.组件销毁，clear2 执行
+```
+
+## 在 React 组件中有两种常见副作用操作：需要清除的和不需要清除的。
+
+（1）无需清除的 effect
+在 React 更新 DOM 之后运行一些额外的代码。比如发送网络请求，手动变更 DOM，记录日志
+
+默认情况下，它在第一次渲染之后和每次更新之后都会执行。React 保证了每次运行 effect 的同时，DOM 都已经更新完毕。
+每次我们重新渲染，都会生成新的 effect，替换掉之前的。某种意义上讲，effect 更像是渲染结果的一部分 —— 每个 effect “属于”一次特定的渲染
+:::warning
+提示
+
+与 componentDidMount 或 componentDidUpdate 不同，使用 useEffect 调度的 effect 不会阻塞浏览器更新屏幕，这让你的应用看起来响应更快。
+:::
+(2)需要清除的 effect
+例如订阅外部数据源。这种情况下，清除工作是非常重要的，可以防止引起内存泄露
+如果你的 effect 返回一个函数，React 将会在执行清除操作时调用它.
+
+## 使用 Effect 的提示
+
+(1)使用多个 Effect 实现关注点分离
+Hook 允许我们按照代码的用途分离他们。React 将按照 effect 声明的顺序依次调用组件中的每一个 effect。
+
+为什么每次更新的时候都要运行 Effect
+useEffect 会在调用一个新的 effect 之前对前一个 effect 进行清理。
+
+```javaScript
+在 class 组件中，我们需要添加 componentDidUpdate 来解决这个问题：
+  componentDidUpdate(prevProps) {
+    // 取消订阅之前的 friend.id
+    ChatAPI.unsubscribeFromFriendStatus(
+      prevProps.friend.id,
+      this.handleStatusChange
+    );
+    // 订阅新的 friend.id
+    ChatAPI.subscribeToFriendStatus(
+      this.props.friend.id,
+      this.handleStatusChange
+    );
+  }
+  忘记正确地处理 componentDidUpdate 是 React 应用中常见的 bug 来源。
+```
+
+```javaScript
+function FriendStatus(props) {
+  // ...
+  useEffect(() => {
+    // ...
+    ChatAPI.subscribeToFriendStatus(props.friend.id, handleStatusChange);
+    return () => {
+      ChatAPI.unsubscribeFromFriendStatus(props.friend.id, handleStatusChange);
+    };
+  });
+
+  // Mount with { friend: { id: 100 } } props
+ChatAPI.subscribeToFriendStatus(100, handleStatusChange);     // 运行第一个 effect
+
+// Update with { friend: { id: 200 } } props
+ChatAPI.unsubscribeFromFriendStatus(100, handleStatusChange); // 清除上一个 effect
+ChatAPI.subscribeToFriendStatus(200, handleStatusChange);     // 运行下一个 effect
+
+// Update with { friend: { id: 300 } } props
+ChatAPI.unsubscribeFromFriendStatus(200, handleStatusChange); // 清除上一个 effect
+ChatAPI.subscribeToFriendStatus(300, handleStatusChange);     // 运行下一个 effect
+
+// Unmount
+ChatAPI.unsubscribeFromFriendStatus(300, handleStatusChange); // 清除最后一个 effect
+```
+
+(2)通过跳过 Effect 进行性能优化
+在 class 组件中，我们可以通过在 componentDidUpdate 中添加对 prevProps 或 prevState 的比较逻辑解决.
+如果某些特定值在两次重渲染之间没有发生变化，你可以通知 React 跳过对 effect 的调用，只要传递数组作为 useEffect 的第二个可选参数即可：
+
+```javaScript
+useEffect(() => {
+document.title = `You clicked ${count} times`;
+}, [count]); // 仅在 count 更改时更新
 ```
 
 ## 页面销毁时请求还在进行中，销毁后仍然向向 state 中写入数据造成内存溢出警告
@@ -312,3 +386,5 @@ export default function IndexPageContainer(): JSX.Element {
 
 hooks 中的记忆函数：
 useState useEffect／useLayoutEffect useReducer useRef useMemo(记忆运算结果) useCallback(记忆函数体)
+
+useMemo 不写数组则监控所有状态值的更新；空数组则不监控任何状态，状态改变不更新；数组有值，则监控该值的变化。
